@@ -1,9 +1,10 @@
-import csv
-import json
+import csv, json
 
-with open('2016.csv') as f:
-    reader = csv.DictReader(f)
-    rows = list(reader)
+csvfile = open('2016.csv', 'r')
+jsonfile = open('sample.json', 'w')
 
-with open('2016.json', 'w') as f:
-    json.dump(rows, f)
+fieldnames = ("date","rain")
+reader = csv.reader(csvfile, fieldnames)
+
+out = json.dumps( [ dict(zip(row[::2], row[1::2])) for row in reader ] )
+jsonfile.write(out)
