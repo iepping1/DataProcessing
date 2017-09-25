@@ -1,0 +1,1 @@
+http://www.weatherbase.com/weather/city.php3?c=BE&name=Belgium

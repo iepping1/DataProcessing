@@ -1,0 +1,31 @@
+Country Name	Rain	Happiness
+Albania	1485	4644
+Austria	1110	7006
+Belgium	847	6981
+Bosnia and Herzegovina	1028	5182
+Bulgaria	608	4714
+Croatia	1113	5293
+Cyprus	498	5621
+Czech Republic	677	6609
+Denmark	703	7522
+Finland	536	7469
+France	867	6442
+Germany	700	6591
+Greece	652	5227
+Hungary	589	5324
+Iceland	1940	7504
+Ireland	1118	6977
+Italy	832	5964
+Luxembourg	934	6863
+Macedonia	619	5175
+Netherlands	778	7377
+Norway	1414	7537
+Poland	600	5973
+Portugal	854	5195
+Romania	637	5825
+Slovak Republic	824	6098
+Slovenia	1162	5758
+Spain	636	6403
+Sweden	624	7284
+Switzerland	1537	7494
+United Kingdom	1220	6714

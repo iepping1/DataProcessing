@@ -1,12 +1,10 @@
 import csv, json
 
-csvfile = open('KNMI_20170830.txt', 'r')
-jsonfile = open('temp.json', 'w')
+csvfile = open('countries2.csv', 'r')
+jsonfile = open('countries.json', 'w')
 
-fieldnames = ("Station","Date","Rain")
+fieldnames = ("Country","happiness")
 jsonfile.write('[')
-for i in range(12):
-    csvfile.next()
 reader = csv.DictReader(csvfile, fieldnames)
 for row in reader:
     json.dump(row, jsonfile)
