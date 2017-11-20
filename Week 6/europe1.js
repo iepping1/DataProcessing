@@ -1,26 +1,26 @@
 // sets dimensions of the canvas
 var marginline = {top: 40, right: 10, bottom: 20, left: 50},
-    width = 550 - marginline.left - marginline.right,
-    height = 500 - marginline.top - marginline.bottom;
+    width = 850 - marginline.left - marginline.right,
+    height = 800 - marginline.top - marginline.bottom;
 
 // parses the dates into days, months and years
 var formatDate = d3.time.format("%Y");
 
 // sets scales of x and y
-var	x = d3.time.scale().range([marginline.left, width]);
-	y = d3.scale.linear().range([height, 0]);
+var	xScaleLine = d3.time.scale().range([marginline.left, width]);
+	yScaleLine = d3.scale.linear().range([height, 0]);
 
 // defines the axes
-var xAxis = d3.svg.axis()
-    .scale(x)
+var xAxisLine = d3.svg.axis()
+    .scale(xScaleLine)
     .orient("bottom")
 	//.ticks(5)
 	.tickFormat(function(d) {
 		return formatDate(d);
 	});
 
-var yAxis = d3.svg.axis()
-    .scale(y)
+var yAxisLine = d3.svg.axis()
+    .scale(yScaleLine)
     .orient("left");
 
 // Setting x position for line labels
@@ -28,11 +28,12 @@ var xLabel = width;
 
 // Create the Line Generator
 var line = d3.svg.line()
-    .x(function(d) {return x(formatDate.parse(d.years)); })
-    .y(function(d) {return y(+d.social); });
+    .x(function(d) {return xScaleLine(formatDate.parse(d.year)); })
+    .y(function(d) {return yScaleLine(+d.support); });
 
 // creates the first canvas
-var svg = d3.select("body").append("svg")
+var linechart = d3.select("#europe1")
+	.append("svg")
     .attr("width", width + marginline.left + marginline.right)
     .attr("height", height + marginline.top + marginline.bottom)
     .append("g")
@@ -46,7 +47,6 @@ var activeCountry;
 
 // loads the data
 d3.json("unhappy2.json", function(error, data) {
-	console.log(JSON.stringify(data, null, 2));
 
     // Create new array of all years in timeline for svg. Will be referenced later
     var years = ["2010", "2011", "2012", "2013", "2014", "2015", "2016"];
@@ -74,33 +74,26 @@ d3.json("unhappy2.json", function(error, data) {
 		}
 	}
 
-    //data.forEach(function(d) {
-    //d.years = formatDate.parse(d.years);
-    //d.support = +d.support;
-
-    // defines the lines of tempmax
-    //var line = d3.svg.line()
-    //.x(function(d) { return x(d.Date); })
-    //.y(function(d) { return y(d.Tempmax); });
-
-    // scales the range to the data
-    //x.domain(d3.extent(data1, function(d) { return d.Date; }));
-    //y.domain([d3.min(data1, function(d) {return Math.min(d.Tempmax, d.Tempmin, d.TempG); }),
-    //          d3.max(data1, function(d) {return Math.max(d.Tempmax, d.Tempmin, d.TempG); })]);
-
-	x.domain([
+	xScaleLine.domain([
 		d3.min(years, function(d) {return formatDate.parse(d);}),
 		d3.max(years, function(d) {return formatDate.parse(d);})
 	]);	  
 	
-	y.domain([
-		d3.max(dataset, function(d) {return d3.max(d.social, function(d) {return +d.support;});
-    }),
-    0
+	yScaleLine.domain([
+		d3.min(dataset, function(d) {
+			return d3.min(d.social, function(d) {
+				return +d.support;
+			});
+		}),
+		d3.max(dataset, function(d) {
+			return d3.max(d.social, function(d) {
+				return +d.support;
+			});
+		}),
     ]);
 	
 	// Make a group for each country
-	var groups = svg.selectAll("g")
+	var groups = linechart.selectAll("g")
 		.data(dataset)
 		.enter()
 		.append("g")
@@ -114,10 +107,10 @@ d3.json("unhappy2.json", function(error, data) {
 			activeCountry = d.Country;
 
 			// Setting position for the country label
-			var xPosition = wLine/2 + 35;
-			var yPosition = marginLine.top - 10;
+			var xPosition = (width + marginline.left + marginline.right)/2 + 35;
+			var yPosition = marginline.top - 10;
 
-			svg.append("text")
+			linechart.append("text")
 			.attr("id", "hoverLabel")
 			.attr("x", xPosition)
 			.attr("y", yPosition)
@@ -144,7 +137,8 @@ d3.json("unhappy2.json", function(error, data) {
 			.text(function(d) {
 				return d.Country;
 			});
-
+		
+		console.log(JSON.stringify(data, null, 2));
 		//Create new line within each group
 		groups.selectAll("path")
 			.data(function(d) {
@@ -156,37 +150,37 @@ d3.json("unhappy2.json", function(error, data) {
 			.attr("d", line);
 
 		// draws the axes
-		svg.append("g")
+		linechart.append("g")
 			.attr("class", "x axis")
 			.attr("transform", "translate(0," + height + ")")
-			.call(xAxis);
+			.call(xAxisLine);
 		
-		svg.append("g")
+		linechart.append("g")
 			.attr("class", "y axis")
-			.call(yAxis)
-			.append("text")
+			.call(yAxisLine)
+			//.append("text")
 			//.attr("transform", "rotate(-90)")
-			.attr("transform", "translate(" + (marginLine.left) + ",0)")
-			.attr("x", 0 - marginLine.left)
-			.attr("y", marginLine.top - 10)
-			.attr("dy", "0.71em")
-			.attr("fill", "#000")
-			.style ("text-anchor", "start")
-			.text("Level of Social Support in ");
+			//.attr("transform", "translate(" + (marginline.left) + ",0)")
+			//.attr("x", 60 - marginline.left)
+			//.attr("y", marginline.top - 60)
+			//.attr("dy", "0.71em")
+			//.attr("fill", "#000")
+			//.style ("text-anchor", "start")
+			//.text("Level of Social Support in ");
 
-        //Labels for highlighted lines
-        svg.append("text")
-          .attr("transform", "translate(" + xLabel + ", " + y(data[20][years[4]]) + ")")
-          .attr("dy", ".15em")
-          .attr("dx", ".25em")
-          .attr("text-anchor", "start")
-          .attr("class","labelNation")
-          .text( + data[25][years[5]] );
+        //labels for highlighted lines
+        linechart.append("text")
+			.attr("transform", "translate(" + xLabel + ", " + yScaleLine(data[20][years[4]]) + ")")
+			.attr("dy", ".15em")
+			.attr("dx", ".25em")
+			.attr("text-anchor", "start")
+			.attr("class","labelNation")
+			.text( + data[25][years[5]] );
 		  
 		// writes the title
-		svg.append("text")
+		linechart.append("text")
 			.attr("x", (width / 2))
-			.attr("y", 0 - (margin.top / 2))
+			.attr("y", 0 - (marginline.top / 2))
 			.attr("text-anchor", "middle")
 			.style("font-size", "20px")
 			.style("text-decoration", "underline")

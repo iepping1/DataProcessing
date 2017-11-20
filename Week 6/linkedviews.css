@@ -1,11 +1,12 @@
-.container {
+/*.container {
 	width: 1200px;
 	height: 700px;
 	margin: 25px auto 25px auto;
 	padding: 50px 50px 50px 50px;
 	background-color: white;
 	box-shadow: 0 0 20px #ccc;
-}
+}*/
+
 #footer {
 	border-top: 1px solid silver;
 	color: #888888;
@@ -14,7 +15,6 @@
 	margin-top: 1rem;
 	padding: 0.5rem;
 }
-
 
 body {
 	background-color: #fff;
@@ -48,12 +48,12 @@ svg {
 	line-height: 150%;
 }
 
-#area1 {
+#europe1 {
 	display: inline-block;
 /*	float: right;*/
 }
 
-#area2 {
+#europe3 {
 	display: inline-block;
 /*	float: left;*/
 }
@@ -75,32 +75,16 @@ path {
 	transition: all 0.1s;
 	cursor: pointer;
 	fill: none;
+    stroke: steelblue;
+    stroke-width: 3px;
 }
-
-g.linklight path{
-	stroke: #ff0000;
-	opacity: 1;
-}
-
-g.highlight path {
-	stroke: #cfa63e;
-	stroke-width: 4;
-	opacity: 1;
-}
-
-g.national path {
-	stroke: #5387bd;
-	stroke-width: 4;
-	opacity: 1;
-}
-
 
 .axis path,
 .axis line {
-	fill: none;
-	stroke: #BCBCBC;
-	stroke-width: 1;
-	shape-rendering: crispEdges;
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    shape-rendering: crispEdges;
 }
 
 .axis path {
@@ -113,13 +97,17 @@ g.national path {
 }
 
 .pathBase {
-	stroke: #888;
+	stroke: #000;
 	opacity: 0.2;
 }
 
 .pathLight {
 	stroke: black;
 	opacity: 1;
+}
+
+.container {
+  float: left
 }
 	
 #hoverlabel {
@@ -163,78 +151,48 @@ g.national path {
 	opacity: 1;
 }
 
-/* Bar specific CSS */
-
-.bar {
-    fill: steelblue;
+.overlay {
+    fill: none;
+    pointer-events: all;
 }
+
+/* Bar specific CSS */
 
 rect:hover {
 	fill: #2E2E31;
 }
 
-.barBase {
-	fill: pink;
+.barBase {	
+	fill: #5288BE;
 }
 
 .barLight {
-	fill: brown;
+	fill: #2E2E31;
 }					
 
-.bar:hover {
-  fill: brown;
-}
-
 .axisBar text {
-	font: 11px sans-serif;
+	font-family: "ff-nuvo-sc-web-pro-1","ff-nuvo-sc-web-pro-2", sans-serif;
+	font-size: 11px;
 }
 
 .axisBarTitle {
-	font: 12px sans-serif;
+	font-family: "ff-nuvo-sc-web-pro-1","ff-nuvo-sc-web-pro-2", sans-serif;
+	font-size: 12px;
 }
 
-.axis path,
-.axis line {
-    fill: none;
-    stroke: #000;
-	shape-rendering: crispEdges;
+.y.axisBar path,
+.y.axisBar line {
+	opacity: 0;
+	cursor: auto;
+}
+
+.x.axisBar path,
+.x.axisBar line {
+	opacity: 0.2;
 	cursor: auto;
 }
 
 .barlabel {
-	font: 11px sans-serif;
-}
-
-path {
-  stroke: white;
-  stroke-width: 0.25px;
-  fill: grey;
-}
-
-svg {
-	background-color: white;
-}
-
-h1 {
-	color: rgb(115, 115, 115);
-	font-size: 18px;
-	font-family: sans-serif;
-	font-weight: bold;
-	margin: 0;
-	padding-bottom: 10px;
-}
-
-	#container {
-	width: 800px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 20px;
-	padding: 20px;
-	background-color: white;
-	box-shadow: 1px 1px 1px 2px rgb(217, 217, 217);
-}
-
-path:hover {
-	fill: rgba(8, 81, 156, 0.2);
-	cursor:pointer;
+	font-family: "ff-nuvo-sc-web-pro-1","ff-nuvo-sc-web-pro-2", sans-serif;
+	font-size:11px;
 }
