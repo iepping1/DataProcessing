@@ -46,7 +46,7 @@ var dataset;
 var activeCountry;
 
 // loads the data
-d3.json("unhappy2.json", function(error, data) {
+d3.json("linebar/unhappy2.json", function(error, data) {
 
     // Create new array of all years in timeline for svg. Will be referenced later
     var years = ["2010", "2011", "2012", "2013", "2014", "2015", "2016"];

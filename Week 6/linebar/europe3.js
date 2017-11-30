@@ -31,8 +31,8 @@ var barchart = d3.select("#europe3")
 // for linked hovering
 var activeCountry;
 
-// loads the data from the KNMI site
-d3.json("unhappy.json", function(error, data) {
+// loads the data
+d3.json("linebar/unhappy.json", function(error, data) {
     data.forEach(function(d) {
         d.happiness = +d.happiness;
         d.Country = d.Country;
