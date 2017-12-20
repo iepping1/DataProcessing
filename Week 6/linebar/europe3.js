@@ -1,5 +1,5 @@
 // sets dimensions of the canvas
-var marginBar = {top: 0, right: 30, bottom: 50, left: 120},
+var marginBar = {top: 40, right: 30, bottom: 50, left: 120},
     width = 800 - marginBar.left - marginBar.right,
     height = 700 - marginBar.top - marginBar.bottom;
 
@@ -62,6 +62,15 @@ d3.json("linebar/unhappy.json", function(error, data) {
         .attr("dy", ".71em")
         .style("text-anchor", "end")
 
+	// writes the title
+	barchart.append("text")
+		.attr("x", (width / 2))
+		.attr("y", 0 - (marginBar.top / 2))
+		.style("font-size", "20px")
+		.attr("text-anchor", "middle")
+		.style("text-decoration", "underline")
+		.text("Happiness of European Countries in 2016");	
+
     // draws the bar chart
     barchart.selectAll("bar")
         .data(data)
@@ -76,7 +85,9 @@ d3.json("linebar/unhappy.json", function(error, data) {
 	    .append("title")
 		.text(function(d) {
 			return d.Country + "'s happiness score of 2017 is " + d.happiness;
+		
 	});
+			
     //rollover functionality
 	barchart.selectAll("rect")
 
