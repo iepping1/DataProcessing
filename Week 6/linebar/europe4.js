@@ -1,3 +1,7 @@
+//https://bl.ocks.org/syncopika/f1c9036b0deb058454f825238a95b6be
+
+//https://bl.ocks.org/martinjc/f2241a09bd18caad10fc7249ca5d7816
+
 // sets dimensions of the canvas
 var marginBar = {top: 40, right: 30, bottom: 20, left: 120},
     width = 850 - marginBar.left - marginBar.right,
@@ -31,38 +35,64 @@ var barchart = d3.select("#europe3")
 // for linked hovering
 var activeCountry;
 
-// loads the data
-d3.json("linebar/unhappier.json", function(error, data) {
-	console.log(JSON.stringify(data, null, 2));
-    data.forEach(function(d) {
-        d.happiness = +d.happiness;
-        d.Country = d.Country;
-		d.year = d.year;
-	});
+var Data2017 = [];
+var Data2018 = [];
 
-    // scales the range to the data
-    xBarScale.domain([5, d3.max(data, function(d) { return d.happiness; })]);
-    yBarScale.domain(data.map(function(d) { return d.Country; }));
+function change(value){
+	if(value === '2017')
+	{
+		update(Data2017);
+	}
+	else if(value === '2018')
+	{
+		update(Data2018);
+	}
+	console.log(JSON.stringify(Data2018, null, 2));
+}
 
-    // draws the axes and adds the text
-    barchart.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxisBar)
-    .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.5em")
-        .attr("dy", "-.55em")
-        .attr("transform", "rotate(-90)" );
+function update(data){
 
-    barchart.append("g")
-        .attr("class", "y axis")
-        .call(yAxisBar)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
+	// scales the range to the data
+	xBarScale.domain([5, d3.max(data, function(d) { return d.happiness; })]);
+	yBarScale.domain(data.map(function(d) { return d.Country; }));
+	
+	var bars = barchart.selectAll(".bar")
+		.data(data)
+	
+	bars.exit().remove()
+
+	bars.enter()
+		.append("rect")
+		.attr("class", "bar")
+		.attr("x", marginBar.left - 120)
+		.attr("y", function(d, i) { return yBarScale(d.Country);})
+		.attr("width", function(d) { return xBarScale(d.happiness); })
+		.attr("height",yBarScale.rangeBand)
+		.attr("class", "barBase")
+		.append("title")
+		.text(function(d) {
+			return " The happiness score of " + d.Country + " in " + d.year + " is " + d.happiness;
+		});
+	
+	// draws the axes and adds the text
+	barchart.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + height + ")")
+		.call(xAxisBar)
+	.selectAll("text")
+		.style("text-anchor", "end")
+		.attr("dx", "-.5em")
+		.attr("dy", "-.55em")
+		.attr("transform", "rotate(-90)" );
+
+	barchart.append("g")
+		.attr("class", "y axis")
+		.call(yAxisBar)
+		.append("text")
+		.attr("transform", "rotate(-90)")
+		.attr("y", 6)
+		.attr("dy", ".71em")
+		.style("text-anchor", "end")
 
 	// writes the title
 	barchart.append("text")
@@ -75,24 +105,8 @@ d3.json("linebar/unhappier.json", function(error, data) {
 		.text(function(d) {
 			return 	"Happiness of European Countries in " + d.year;
 		})
-
-    // draws the bar chart
-    barchart.selectAll("bar")
-        .data(data)
-        .enter()
-        .append("rect")
-        .attr("class", "bar")
-        .attr("x", marginBar.left - 120)
-	    .attr("y", function(d, i) { return yBarScale(d.Country);})
-	    .attr("width", function(d) { return xBarScale(d.happiness); })
-		.attr("height",yBarScale.rangeBand)
-	    .attr("class", "barBase")
-	    .append("title")
-		.text(function(d) {
-			return " The happiness score of " + d.Country + " in " + d.year + " is " + d.happiness;
-	});
-			
-    //rollover functionality
+		
+	//rollover functionality
 	barchart.selectAll("rect")
 
 		.on("mouseover", function(d) {
@@ -133,4 +147,25 @@ d3.json("linebar/unhappier.json", function(error, data) {
 
 			d3.select("#hoverLabel").remove();
 	});
+}
+
+// loads the data
+d3.json("linebar/unhappier.json", function(error, data) {
+    data.forEach(function(d) {
+        d.happiness = +d.happiness;
+        d.Country = d.Country;
+		d.year = d.year;
+	});
+
+	for(var i = 0; i < data.length; i++){
+		if(data[i]["year"] === "2017"){
+			Data2017.push(data[i]);
+		}else{
+			Data2018.push(data[i]);
+		}
+	}
+	
+	//use 2018 to begin with
+	update(Data2018);
+			
 });

@@ -4,31 +4,26 @@ var marginline = {top: 40, right: 10, bottom: 20, left: 50},
     height = 800 - marginline.top - marginline.bottom;
 
 // parses the dates into days, months and years
-var formatDate = d3.time.format("%Y");
+var formatDate = d3.timeParse("%Y");
 
 // sets scales of x and y
-var	xScaleLine = d3.time.scale().range([marginline.left, width]);
-	yScaleLine = d3.scale.linear().range([height, 0]);
+var	xScaleLine = d3.scaleTime().range([marginline.left, width]);
+	yScaleLine = d3.scaleLinear().range([height, 0]);
 
 // defines the axes
-var xAxisLine = d3.svg.axis()
-    .scale(xScaleLine)
-    .orient("bottom")
-	//.ticks(5)
+var xAxisLine = d3.axisBottom(xScaleLine)
 	.tickFormat(function(d) {
 		return formatDate(d);
 	});
 
-var yAxisLine = d3.svg.axis()
-    .scale(yScaleLine)
-    .orient("left");
+var yAxisLine = d3.axisLeft(yScaleLine);
 
 // Setting x position for line labels
 var xLabel = width;
 
 // Create the Line Generator
-var line = d3.svg.line()
-    .x(function(d) {return xScaleLine(formatDate.parse(d.year)); })
+var line = d3.line()
+    .x(function(d) {return xScaleLine(d3.timeParse(d.year)); })
     .y(function(d) {return yScaleLine(+d.support); });
 
 // creates the first canvas
@@ -75,8 +70,8 @@ d3.json("linebar/unhappy2.json", function(error, data) {
 	}
 
 	xScaleLine.domain([
-		d3.min(years, function(d) {return formatDate.parse(d);}),
-		d3.max(years, function(d) {return formatDate.parse(d);})
+		d3.min(years, function(d) {return d3.timeParse(d);}),
+		d3.max(years, function(d) {return d3.timeParse(d);})
 	]);	  
 	
 	yScaleLine.domain([
@@ -149,7 +144,7 @@ d3.json("linebar/unhappy2.json", function(error, data) {
 			.attr("class", "line")
 			.attr("d", line);
 
-		// Draws the axes
+		// draws the axes
 		linechart.append("g")
 			.attr("class", "x axis")
 			.attr("transform", "translate(0," + height + ")")
@@ -168,7 +163,7 @@ d3.json("linebar/unhappy2.json", function(error, data) {
 			//.style ("text-anchor", "start")
 			//.text("Level of Social Support in ");
 
-        //Labels for highlighted lines
+        //labels for highlighted lines
         linechart.append("text")
 			.attr("transform", "translate(" + xLabel + ", " + yScaleLine(data[20][years[4]]) + ")")
 			.attr("dy", ".15em")
@@ -177,7 +172,7 @@ d3.json("linebar/unhappy2.json", function(error, data) {
 			.attr("class","labelNation")
 			.text( + data[25][years[5]] );
 		  
-		// Writes the title
+		// writes the title
 		linechart.append("text")
 			.attr("x", (width / 2))
 			.attr("y", 0 - (marginline.top / 2))

@@ -1,19 +1,27 @@
-/*.container {
+container {
 	width: 1200px;
 	height: 700px;
 	margin: 25px auto 25px auto;
 	padding: 50px 50px 50px 50px;
 	background-color: white;
 	box-shadow: 0 0 20px #ccc;
-}*/
+}
 
-#footer {
-	border-top: 1px solid silver;
-	color: #888888;
-	font-size: 1.25rem;
-	text-align: center;
-	margin-top: 1rem;
-	padding: 0.5rem;
+slider {
+    position: relative;
+	width: 20%;
+    top: 600px;
+}
+
+footer {
+    position: fixed;
+    top: 0;
+	height: 20px;
+    width: 100%;
+    background-color: silver;
+    color: black;
+    text-align: center;
+	font-size: 16px;
 }
 
 body {
